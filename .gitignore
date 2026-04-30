@@ -1,0 +1,32 @@
+# --- General ---
+.DS_Store
+.env
+.env.local
+.env.*.local
+*.log
+
+# --- Python / Backend ---
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+ENV/
+.python-version
+.pytest_cache/
+.uv/
+
+# --- Node / Frontend ---
+node_modules/
+/frontend/.next/
+/frontend/out/
+/frontend/build/
+.vercel
+*.tsbuildinfo
+next-env.d.ts
+
+# --- System / IDE ---
+.idea/
+.vscode/
+*.swp
+*.swo
