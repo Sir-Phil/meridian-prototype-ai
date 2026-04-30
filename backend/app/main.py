@@ -37,8 +37,9 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:3000",
-        "https://your-project-name.vercel.app", # Add your actual Vercel URL here later
-        "*" # Keep this during the demo if you want to be 100% safe
+        "https://meridian-prototype-ei9kk9ex1-phil9icy-5142s-projects.vercel.app", 
+        "https://meridian-prototype-ai.vercel.app", # Your likely production URL
+        "*" # Since "*" is here, it will work regardless, but good for best practice!
     ],
     allow_credentials=True,
     allow_methods=["*"],
