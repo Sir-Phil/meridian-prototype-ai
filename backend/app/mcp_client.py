@@ -1,7 +1,7 @@
 import asyncio
-from .mcp import ClientSession
-from .mcp.client.sse import sse_client
-from .config import settings
+from mcp import ClientSession
+from mcp.client.sse import sse_client
+from config import settings
 
 class MeridianMCPClient:
     def __init__(self):

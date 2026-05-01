@@ -1,7 +1,7 @@
 import asyncio
 from mcp import ClientSession
 from mcp.client.sse import sse_client
-from app.config import settings 
+from config import settings 
 
 async def discover_meridian_capabilities():
     print(f"Connecting to Meridian MCP at: {settings.MCP_SERVER_URL}...")

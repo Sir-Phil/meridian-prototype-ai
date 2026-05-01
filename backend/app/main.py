@@ -2,20 +2,21 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from .discover_tools import discover_meridian_capabilities
 
-# Internal Imports
 import os
 import sys
 
-# This forces the current directory into the search path
+# Force the current directory into the search path
 current_dir = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(current_dir)
+if current_dir not in sys.path:
+    sys.path.append(current_dir)
 
-# Now use "flat" imports (NO DOTS)
+# Now use FLAT imports (no dots, no 'app.')
+from discover_tools import discover_meridian_capabilities
 from mcp_client import MeridianMCPClient
 from agent import MeridianAgent
 from config import settings
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
