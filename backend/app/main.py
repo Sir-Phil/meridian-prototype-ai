@@ -14,7 +14,7 @@ if current_dir not in sys.path:
 # Now use FLAT imports (no dots, no 'app.')
 from discover_tools import discover_meridian_capabilities
 from mcp_client import MeridianMCPClient
-from agent import MeridianAgent
+from agent import SupportAgent
 from config import settings
 
 
