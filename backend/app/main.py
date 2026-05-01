@@ -2,6 +2,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+from .discover_tools import discover_meridian_capabilities
 
 # Internal Imports
 import os
@@ -12,7 +13,6 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(current_dir)
 
 # Now use "flat" imports (NO DOTS)
-from discover_tools import discover_meridian_capabilities
 from mcp_client import MeridianMCPClient
 from agent import MeridianAgent
 from config import settings
