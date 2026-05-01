@@ -19,6 +19,12 @@ class Settings(BaseSettings):
             return v.strip().strip("[]").strip("'").strip('"')
         return v
 
-    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
+    # model_config = SettingsConfigDict(env_file=".env", extra="ignore")
+    model_config = SettingsConfigDict(
+    env_file=".env", 
+    env_file_encoding='utf-8', 
+    extra="ignore",
+    env_ignore_empty=True # Useful for Vercel
+)
 
 settings = Settings()
