@@ -6,7 +6,7 @@ from pydantic import BaseModel
 # Internal Imports
 from .mcp_client import MeridianMCPClient
 from .agent import SupportAgent
-from discover_tools import discover_meridian_capabilities
+from .discover_tools import discover_meridian_capabilities
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
