@@ -1,39 +1,37 @@
+import os
+import sys
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
-import os
-import sys
-
-# Force the current directory into the search path
+# --- VERCEL PATH FIX ---
+# This ensures sibling files like discover_tools.py can be imported
 current_dir = os.path.dirname(os.path.abspath(__file__))
 if current_dir not in sys.path:
     sys.path.append(current_dir)
 
-# Now use FLAT imports (no dots, no 'app.')
+# Import local modules using flat imports
 from discover_tools import discover_meridian_capabilities
 from mcp_client import MeridianMCPClient
 from agent import SupportAgent
 from config import settings
 
-
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """
-    This logic runs ONCE when the server starts.
-    It acts as a 'Health Check' for your MCP connection.
+    Logic runs on server start. Acts as a Health Check for MCP.
     """
     print("\n--- [STARTUP] Initializing Meridian System ---")
     try:
-        # Run discovery to log tools in the terminal for the demo
+        # Check if MCP server is reachable
         await discover_meridian_capabilities()
         print("--- [STARTUP] MCP Discovery Successful ---\n")
     except Exception as e:
-        print(f"--- [WARNING] MCP Discovery failed during startup: {e} ---")
-        print("--- Check your MCP_SERVER_URL in .env ---\n")
+        print(f"--- [WARNING] MCP Discovery failed: {e} ---")
     
     yield
+    # Cleanup logic if necessary
     print("--- [SHUTDOWN] Cleaning up resources ---")
 
 app = FastAPI(
@@ -42,39 +40,35 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-# 1. Enable CORS so Next.js can communicate with FastAPI
+# Enable CORS for Next.js communication
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:3000",
         "https://meridian-prototype-ai.vercel.app", 
-        "*" # 
+        "*" 
     ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# 2. Initialize the AI Logic
+# Initialize AI Logic
 mcp_client = MeridianMCPClient()
 agent = SupportAgent(mcp_client)
 
-# 3. Define the request structure
 class ChatRequest(BaseModel):
     message: str
 
-# 4. Create the API endpoint for Next.js
 @app.post("/api/chat")
 async def chat_endpoint(request: ChatRequest):
     """
-    Receives text from Next.js, processes it through 
-    the Agentic workflow, and returns the AI's response.
+    Processes text from Next.js through the Agentic workflow.
     """
     response = await agent.run(request.message)
     return {"response": response}
 
-
 if __name__ == "__main__":
     import uvicorn
-    # Added 'app.' prefix so the reloader knows where to look
-    uvicorn.run("app.main:app", host="0.0.0.0", port=8000, reload=True)
+    # Use "main:app" for easier local reloading
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
