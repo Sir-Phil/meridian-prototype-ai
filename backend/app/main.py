@@ -4,8 +4,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 # Internal Imports
-from app.mcp_client import MeridianMCPClient
-from app.agent import SupportAgent
+from .mcp_client import MeridianMCPClient
+from .agent import SupportAgent
 from discover_tools import discover_meridian_capabilities
 
 @asynccontextmanager
